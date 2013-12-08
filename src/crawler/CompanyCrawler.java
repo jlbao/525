@@ -13,12 +13,10 @@ public class CompanyCrawler implements Runnable{
 		while(!Config.companyQueue.isEmpty()){
 			while(Config.currentCompany.taskNum < Config.taskNumPerCompany){ // if the company tasknum is not enough
 				try{
-					String currentTasksPage = getCurrentTasksPage();
+					String taskList = getCurrentTasksPage();
 					
 					// put into the tasks
-					Config.currentCompany.putTasks(currentTasksPage);
-					
-					System.out.println(currentTasksPage);
+					Config.currentCompany.putTasks(taskList);
 					
 				}catch(Exception e){
 					e.printStackTrace();

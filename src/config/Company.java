@@ -2,6 +2,9 @@ package config;
 
 import java.util.ArrayList;
 
+import tools.Parser;
+
+
 public class Company {
 	public String companyName;
 	public String companyURL;
@@ -30,11 +33,21 @@ public class Company {
 		return String.format("http://www.linkedin.com/company/%s/followers?page_num=%s", this.companyName, this.currentPage);
 	}
 	
-	
 	// use regular expression to put the tasks into the task queue
 	public void putTasks(String pageContent){
 		// parse
-		this.taskNum += 10;
-		increaseCurrentPage();
+		try{
+			ArrayList<String> list = Parser.doFollowerListParse(pageContent);
+			for(String url : list){
+				Task t = new Task(url);
+				Config.taskQueue.add(t);
+				this.taskNum++;
+				// log
+				System.out.println(url);
+			}
+			increaseCurrentPage();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 }

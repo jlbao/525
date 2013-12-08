@@ -3,6 +3,7 @@ package tools;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,13 +11,26 @@ import java.util.regex.Pattern;
 public class Parser {
 
 	/**
-	 * @param args
+	 * parse data from the pages we crawled
 	 */
-	public static void main(String[] args) throws Exception{
-		
-		doParse(getFileContent());
 
+	// return the user urls
+	public static ArrayList<String> doFollowerListParse(String str) throws Exception{
+		String regex = "<p class=\"fn n\"><a href=\"/profile/view\\u003Fid=([0-9a-zA-Z]+)&amp;authType=name&amp;authToken=([0-9a-zA-Z]+)";
+        ArrayList<String> list = new ArrayList<String>();
+        
+        Pattern pattern = Pattern.compile(regex);  
+        Matcher matcher = pattern.matcher(str);
+        
+        while (matcher.find()) {
+        	String userID = matcher.group(1);
+        	String token = matcher.group(2);
+        	String url = String.format("http://linkedin.com/profile/view?id=%s&authType=name&authToken=%s&trk=hb_upphoto", userID, token);
+            list.add(url); 
+        }  
+        return list;
 	}
+	
 	
 	public static String getFileContent() throws Exception{
 		File f = new File("./aa.html");
@@ -34,24 +48,5 @@ public class Parser {
         
         return sb.toString();
 	}
-	
-	public static void doParse(String str) throws Exception{
-	
-		//System.out.println(str);
-		
-	      // String to be scanned to find the pattern.
-	      String pattern = "<li class=\"feed-item\">.*</li>";
-	      
-	      Pattern p = Pattern.compile(pattern);
-	      Matcher m = p.matcher(str);
-
-	      int count = 0;
-	      while(m.find()) {
-	         System.out.println(m.group(0));
-	         count++;
-	      }
-	      System.out.println(count);
-	}
-	
 
 }
