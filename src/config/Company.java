@@ -19,7 +19,7 @@ public class Company {
 	
 	public boolean increaseTaskNum(){
 		taskNum++;
-		if(taskNum > Config.taskNumPerCompany)
+		if(taskNum > Config.TaskNumPerCompany)
 			return false;
 		return true;
 	}
@@ -37,13 +37,14 @@ public class Company {
 	public void putTasks(String pageContent){
 		// parse
 		try{
-			ArrayList<String> list = Parser.doFollowerListParse(pageContent);
-			for(String url : list){
-				Task t = new Task(url);
-				Config.taskQueue.add(t);
-				this.taskNum++;
-				// log
-				System.out.println(url);
+			ArrayList<Task> list = Parser.parseFollowerList(pageContent);
+			for(Task task : list){
+				Config.TaskQueue.add(task);
+				
+				// if task num exceed the maximum
+				if(!increaseTaskNum()){
+					return;
+				}
 			}
 			increaseCurrentPage();
 		}catch(Exception e){

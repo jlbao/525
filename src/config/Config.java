@@ -12,24 +12,30 @@ import tools.ThreadPool;
 public class Config {
 
 	public final static HttpConfig httpConfig = new HttpConfig();
-	public final static ConcurrentLinkedQueue<Company> companyQueue = new ConcurrentLinkedQueue<Company>();
-	public final static ConcurrentLinkedQueue<Task> taskQueue = new ConcurrentLinkedQueue<Task>();
-	public final static int taskNumPerCompany = 1000;
-	public final static ThreadPool pool = new ThreadPool(100, 200, 30);
-	public static Company currentCompany;
+	public final static ConcurrentLinkedQueue<Company> CompanyQueue = new ConcurrentLinkedQueue<Company>();
+	
+	// this queue need to be crawled data, and put them into the storeQueue
+	public final static ConcurrentLinkedQueue<Task> TaskQueue = new ConcurrentLinkedQueue<Task>();
+	
+	// this queue need to be stored into the database 
+	public final static ConcurrentLinkedQueue<Task> StoreQueue = new ConcurrentLinkedQueue<Task>();
+	
+	public final static int TaskNumPerCompany = 5;
+	public final static ThreadPool Pool = new ThreadPool(100, 200, 30);
+	public static Company CurrentCompany;
 	
 	private Config(){}
 
 	public static void config(){
 		try {
-			loadHttpConfig();
-			getCompanyConfig();
+			configHttp();
+			configCompany();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	static void loadHttpConfig() throws Exception{
+	static void configHttp() throws Exception{
 		Properties p = new Properties();
 		File f = new File("./HttpConfig.properties");
 		p.load(new FileInputStream(f));
@@ -48,7 +54,7 @@ public class Config {
 		Properties p = new Properties();
 		File f = new File("./httpConfig.properties");
 		try {
-			String cookieString = "bcookie=\"v=2&e2179dd5-a078-45cc-86ad-cf1db8fae15a\"; __qca=P0-1060873076-1384747104000; visit=\"v=1&M\"; X-LI-IDC=C1; JSESSIONID=\"ajax:5963468495909667384\"; L1c=5d3f00e8; L1e=1e6383c; leo_auth_token=\"LIM:308896134:a:1386446766:ebd056ca40d0196183d17c6530a58c943a9fe7b7\"; lidc=\"b=LB06:g=12:u=1:i=1386446766:t=1386533166:s=2058880623\"; sdsc=22%3A1%2C1386446801825%7EMBR2%2C0ej8jJvkoXRxLnW982rLL52gZut4%3D; __utma=23068709.1230364730.1384747104.1384747104.1386446683.2; __utmb=23068709.18.10.1386446683; __utmc=23068709; __utmz=23068709.1384747104.1.1.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); __utmv=23068709.user; _lipt=\"0_06l969EPn0eD5MwGi1LnhAUp2BcUHzmLBSTwyTNqaN_Y9_XV0vJse6mb-1r3XMI29I_5ibHShkEg3dVQolwQWhbXofpVT-lPvlPYsSp525bNp4BaK7Gdeg6EllxBzEc0\"; L1l=67117164; RT=s=1386446983538&r=http%3A%2F%2Fwww.linkedin.com%2Fcompany%2Famazon%2Ffollowers%3Fpage_num%3D1; lang=\"v=2&lang=en-us&c=\"";
+			String cookieString = "bcookie=\"v=2&e2179dd5-a078-45cc-86ad-cf1db8fae15a\"; __qca=P0-1060873076-1384747104000; visit=\"v=1&M\"; X-LI-IDC=C1; JSESSIONID=\"ajax:5963468495909667384\"; L1c=5d3f00e8; L1l=67117164; _lipt=\"0_swTsi0cghLZKl4sNSUok_9Dw8ANvPFCLmFUl611FnvDY9_XV0vJse6mb-1r3XMI29I_5ibHShkEg3dVQolwQWhbXofpVT-lPvlPYsSp525bNp4BaK7Gdeg6EllxBzEc0\"; L1e=469ad62c; lihc_auth_en=1386689024; leo_auth_token=\"LIM:308176431:a:1386689183:5acbc82ab186316d061d8b61ed0a15e29fc2371a\"; lidc=\"b=VB99:g=31:u=1:i=1386689183:t=1386775583:s=576262050\"; sdsc=22%3A1%2C1386689205385%7EMBR2%2C0wfQurgQcTZEdDf4Uraq2VYVy9JA%3D; __utma=23068709.1040337267.1386689039.1386689039.1386689039.1; __utmb=23068709.16.10.1386689039; __utmc=23068709; __utmz=23068709.1386689039.1.1.utmcsr=help.linkedin.com|utmccn=(referral)|utmcmd=referral|utmcct=/app/ask/path/hr/contacts.email/baojialiang_share@163.com; __utmv=23068709.user; RT=s=1386689267416&r=http%3A%2F%2Fwww.linkedin.com%2Fnhome%2Fget-started; lang=\"v=2&lang=en-us&c=\"";
 			p.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
 			p.put("Cache-Control", "max-age=0");
 			p.put("Connection", "keep-alive");
@@ -64,19 +70,26 @@ public class Config {
 	}
 	
 	
+	// get http Connection
 	public synchronized static HttpURLConnection getHttpConnection(String urlString) throws Exception{
 		return httpConfig.getHttpConnection(urlString);
 	}
 	
 	// get company queue config
-	static void getCompanyConfig(){
-		companyQueue.add(new Company("amazon"));
-		companyQueue.add(new Company("google"));
-		companyQueue.add(new Company("microsoft"));
-		companyQueue.add(new Company("linkedin"));
-		companyQueue.add(new Company("facebook"));
-		companyQueue.add(new Company("emc"));
-		currentCompany = companyQueue.poll();
+	static void configCompany(){
+		CompanyQueue.add(new Company("amazon"));
+		CompanyQueue.add(new Company("google"));
+		CompanyQueue.add(new Company("microsoft"));
+		CompanyQueue.add(new Company("linkedin"));
+		CompanyQueue.add(new Company("facebook"));
+		CompanyQueue.add(new Company("emc"));
+		switchCompany();
+	}
+	
+	// switch company
+	public synchronized static void switchCompany(){
+		CurrentCompany = CompanyQueue.poll();
+		System.out.println("-------------switch to " + CurrentCompany.companyName + "-------------");
 	}
 	
 }

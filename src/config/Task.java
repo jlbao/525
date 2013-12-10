@@ -7,7 +7,8 @@ public class Task {
 	public String taskURL;
 	public ArrayList<String> tags;
 	
-	public Task(String taskURL){
+	public Task(String userID, String taskURL){
+		this.userID = userID;
 		this.taskURL = taskURL;
 		tags = new ArrayList<String>();
 	}
