@@ -20,7 +20,7 @@ public class Config {
 	// this queue need to be stored into the database 
 	public final static ConcurrentLinkedQueue<Task> StoreQueue = new ConcurrentLinkedQueue<Task>();
 	
-	public final static int TaskNumPerCompany = 5;
+	public final static int TaskNumPerCompany = 1000;
 	public final static ThreadPool Pool = new ThreadPool(100, 200, 30);
 	public static Company CurrentCompany;
 	

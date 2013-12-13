@@ -49,7 +49,8 @@ public class Parser {
         	}
             sb.append(tag + ",");
         }
-        sb.replace(sb.length() - 1,sb.length(), "");
+        if(sb.length() != 0)
+        	sb.replace(sb.length() - 1,sb.length() , "");
         return sb.toString();
 	}
 	
