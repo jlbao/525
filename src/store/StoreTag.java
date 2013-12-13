@@ -40,16 +40,18 @@ public class StoreTag implements Runnable {
 					String companyName = Config.CurrentCompany.companyName;
 					String tags = task.tags;
 
-					String sql = "INSERT INTO follower(FollowerID, CompanyName,Tags) "
-							+ " VALUES ('"
-							+ followerID
-							+ "','"
-							+ companyName
-							+ "','" + tags + "')";
-
-					stmt = conn.createStatement();
-					stmt.executeUpdate(sql);
-					stmt.close();
+					if(!tags.isEmpty()){
+						String sql = "INSERT INTO follower(FollowerID, CompanyName,Tags,Datetime) "
+								+ " VALUES ('"
+								+ followerID
+								+ "','"
+								+ companyName
+								+ "','" + tags + "',NOW())";
+	
+						stmt = conn.createStatement();
+						stmt.executeUpdate(sql);
+						stmt.close();
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

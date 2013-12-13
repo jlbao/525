@@ -11,7 +11,7 @@ public class Main {
 	public static void main(String[] args){
 		Config.config();
 		Config.Pool.execute(new CompanyCrawler());
-		startTaskThreads(50);
+		startTaskThreads(20);
 		startStoreThreads(1);
 	}
 	

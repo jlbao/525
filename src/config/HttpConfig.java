@@ -15,7 +15,7 @@ public class HttpConfig {
 	
 	public HttpURLConnection getHttpConnection(String urlString) throws Exception{
 		HttpURLConnection conn;
-		URL url = new URL(urlString);
+		URL url = new URL("HTTP", "204.93.54.15", 8089, urlString);
 		conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
 		
