@@ -1,8 +1,5 @@
 package tools;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,20 +36,21 @@ public class Parser {
 	}
 	
 	// get tags from task page
-	public static ArrayList<String> getTags(String str) throws Exception{
+	public static String getTags(String str) throws Exception{
 		String regex = "name\":\"([\\s\\w\\\\]+)\",\"endorsementCount\":";
-		ArrayList<String> list = new ArrayList<String>();
         Pattern pattern = Pattern.compile(regex);  
         Matcher matcher = pattern.matcher(str);
+        StringBuffer sb = new StringBuffer();
         
         while (matcher.find()) {
         	String tag = matcher.group(1);
         	if(tag.contains("\\u002d")){
         		tag = tag.replaceAll(Pattern.quote("\\u002d"), "-");
         	}
-            list.add(tag); 
-        }  
-        return list;
+            sb.append(tag + ",");
+        }
+        sb.replace(sb.length() - 1,sb.length(), "");
+        return sb.toString();
 	}
 	
 	
@@ -62,8 +60,6 @@ public class Parser {
 		String content = getFileContent();
 		getTags(content);
 	}
-	*/
-	
 
 	public static String getFileContent() throws Exception{
 		File f = new File("./aa.html");
@@ -81,5 +77,6 @@ public class Parser {
         
         return sb.toString();
 	}
+	*/
 
 }

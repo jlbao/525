@@ -18,7 +18,7 @@ public class TaskCrawler implements Runnable{
 					String content = HttpOperation.getPageContent(task.taskURL);
 					task.tags = Parser.getTags(content);
 					
-					log(task);
+					logs(task);
 					
 					Config.StoreQueue.add(task);
 				} catch (Exception e) {
@@ -29,12 +29,14 @@ public class TaskCrawler implements Runnable{
 	}
 	
 	// logs
-	public void log(Task task){
-		System.out.print(task.userID + " ");
-		for(String val : task.tags){
-			System.out.print(val + " ");
+	public void logs(Task task){
+		if(task.userID.isEmpty()){
+			System.out.println("no userID");
+		}else{
+			System.out.print(task.userID + " ");
+			System.out.print(task.tags);
+			System.out.println();
 		}
-		System.out.println();
 	}
 	
 }
