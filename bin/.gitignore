@@ -1,5 +1,5 @@
-/store
-/main
 /config
+/main
+/store
 /crawler
-/tools
+/adapter

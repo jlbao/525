@@ -54,7 +54,8 @@ public class StoreTag implements Runnable {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("------------------primary key collision------------------");
+				//e.printStackTrace();
 			}
 		}
 		

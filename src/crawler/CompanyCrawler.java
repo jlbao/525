@@ -16,7 +16,8 @@ public class CompanyCrawler implements Runnable{
 					Config.CurrentCompany.putTasks(taskList);
 					
 				}catch(Exception e){
-					e.printStackTrace();
+					//e.printStackTrace();
+					System.out.println("------------------" + e.getMessage() + "--------------------");
 				}
 			}
 			

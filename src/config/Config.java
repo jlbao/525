@@ -77,10 +77,39 @@ public class Config {
 	
 	// get company queue config
 	static void configCompany(){
+		/*CompanyQueue.add(new Company("linkedin"));
+		CompanyQueue.add(new Company("vmware"));
+		CompanyQueue.add(new Company("twitter"));
+		CompanyQueue.add(new Company("oracle"));
+		CompanyQueue.add(new Company("dropbox"));
+		CompanyQueue.add(new Company("apple"));
+		CompanyQueue.add(new Company("dell"));
+		CompanyQueue.add(new Company("amd"));
+		CompanyQueue.add(new Company("nvidia"));
+		CompanyQueue.add(new Company("qualcomm"));
+		*/
+		CompanyQueue.add(new Company("huawei"));
+		CompanyQueue.add(new Company("ibm"));
+		CompanyQueue.add(new Company("nokia"));
+		CompanyQueue.add(new Company("samsung"));
+		CompanyQueue.add(new Company("cisco"));
+		CompanyQueue.add(new Company("ebay"));
+		CompanyQueue.add(new Company("yahoo"));
+		CompanyQueue.add(new Company("careerbuilder"));
+		CompanyQueue.add(new Company("monster"));
+		CompanyQueue.add(new Company("texas-instruments"));
+		CompanyQueue.add(new Company("lenovo"));
+		CompanyQueue.add(new Company("asus"));
+		CompanyQueue.add(new Company("tencent"));
+		CompanyQueue.add(new Company("htc"));
+		CompanyQueue.add(new Company("sony"));
+		
+		CompanyQueue.add(new Company("seagate-technology"));
+		
+		
 		CompanyQueue.add(new Company("amazon"));
 		CompanyQueue.add(new Company("google"));
 		CompanyQueue.add(new Company("microsoft"));
-		CompanyQueue.add(new Company("linkedin"));
 		CompanyQueue.add(new Company("facebook"));
 		CompanyQueue.add(new Company("emc"));
 		switchCompany();
@@ -89,7 +118,10 @@ public class Config {
 	// switch company
 	public synchronized static void switchCompany(){
 		CurrentCompany = CompanyQueue.poll();
+		System.out.println();
 		System.out.println("-------------switch to " + CurrentCompany.companyName + "-------------");
+		System.out.println();
 	}
+	
 	
 }

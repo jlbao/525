@@ -39,7 +39,7 @@ public class Company {
 		try{
 			ArrayList<Task> list = Parser.parseFollowerList(pageContent);
 			if(list.isEmpty()){
-				System.out.println("no data");
+				System.out.println(pageContent);
 			}
 			for(Task task : list){
 				Config.TaskQueue.add(task);
